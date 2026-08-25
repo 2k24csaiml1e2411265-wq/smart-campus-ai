@@ -1,0 +1,111 @@
+"""Campus catalog for DEMO simulator. Values are illustrative, not measured campus data."""
+
+DEPARTMENTS = [
+    {
+        "name": "Computer Science & Engineering",
+        "code": "CSE",
+        "building": "Block A",
+        "floor_area": 4200.0,
+        "student_count": 720,
+        "staff_count": 48,
+        "energy_base": 42.0,
+        "solar_cap": 28.0,
+        "water_base": 180.0,
+    },
+    {
+        "name": "Electronics & Communication Engineering",
+        "code": "ECE",
+        "building": "Block B",
+        "floor_area": 3600.0,
+        "student_count": 540,
+        "staff_count": 36,
+        "energy_base": 38.0,
+        "solar_cap": 22.0,
+        "water_base": 150.0,
+    },
+    {
+        "name": "Mechanical Engineering",
+        "code": "ME",
+        "building": "Workshop Block",
+        "floor_area": 5100.0,
+        "student_count": 480,
+        "staff_count": 32,
+        "energy_base": 55.0,
+        "solar_cap": 18.0,
+        "water_base": 210.0,
+    },
+    {
+        "name": "Civil Engineering",
+        "code": "CE",
+        "building": "Block C",
+        "floor_area": 3900.0,
+        "student_count": 420,
+        "staff_count": 28,
+        "energy_base": 33.0,
+        "solar_cap": 16.0,
+        "water_base": 190.0,
+    },
+    {
+        "name": "Master of Business Administration",
+        "code": "MBA",
+        "building": "Management Block",
+        "floor_area": 2400.0,
+        "student_count": 240,
+        "staff_count": 22,
+        "energy_base": 22.0,
+        "solar_cap": 12.0,
+        "water_base": 90.0,
+    },
+    {
+        "name": "Master of Computer Applications",
+        "code": "MCA",
+        "building": "Block A Annex",
+        "floor_area": 1800.0,
+        "student_count": 180,
+        "staff_count": 16,
+        "energy_base": 20.0,
+        "solar_cap": 10.0,
+        "water_base": 70.0,
+    },
+    {
+        "name": "Electrical & Electronics Engineering",
+        "code": "EEE",
+        "building": "Block D",
+        "floor_area": 3400.0,
+        "student_count": 360,
+        "staff_count": 26,
+        "energy_base": 48.0,
+        "solar_cap": 24.0,
+        "water_base": 160.0,
+    },
+]
+
+
+def devices_for(code: str) -> list[dict]:
+    return [
+        {
+            "device_id": f"{code}-F1-ENERGY-01",
+            "device_type": "energy_meter",
+            "location": f"{code} Floor 1",
+        },
+        {
+            "device_id": f"{code}-F2-ENERGY-02",
+            "device_type": "energy_meter",
+            "location": f"{code} Floor 2",
+        },
+        {
+            "device_id": f"{code}-SOLAR-01",
+            "device_type": "solar_meter",
+            "location": f"{code} Rooftop",
+        },
+        {
+            "device_id": f"{code}-WATER-01",
+            "device_type": "water_meter",
+            "location": f"{code} Utility",
+        },
+        {
+            "device_id": f"{code}-ENV-01",
+            "device_type": "environmental_sensor",
+            "location": f"{code} Atrium",
+        },
+    ]

@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f4f1ea;
+  --ink: #16231c;
+  --card: rgba(255, 255, 255, 0.78);
+}
+
+.dark {
+  --bg: #0c1410;
+  --ink: #e8efe9;
+  --card: rgba(18, 32, 26, 0.78);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.dark body {
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(45, 106, 79, 0.25), transparent),
+    #0c1410;
+}
+
+.app-shell {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent);
+}
+
+.card {
+  @apply rounded-2xl border border-stone-200/80 bg-white/80 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-canopy-900/70;
+}
+
+.chip {
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
+}
+
+.card {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(15, 61, 46, 0.08);
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade {
+  animation: fadein 0.35s ease;
+}
+
+input,
+select,
+button {
+  font-family: inherit;
+}

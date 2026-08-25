@@ -1,0 +1,49 @@
+# Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+
+# ML artifacts (keep structure, ignore large trained blobs if needed)
+# models/*.joblib is committed for demo convenience in this project
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Database
+*.db
+*.sqlite3
+backend/data/
+
+# Reports generated at runtime
+backend/reports/*.pdf
+
+# Logs
+*.log
+logs/
