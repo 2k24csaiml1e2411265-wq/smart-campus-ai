@@ -1,928 +1,327 @@
 # 🏫 Smart Campus AI
 
-> **An AI-powered smart campus management and monitoring platform for energy optimization, anomaly detection, forecasting, and sustainable campus operations.**
+> **AI-Powered Energy, Water & Sustainability Intelligence Platform**
 
-Smart Campus AI is a full-stack intelligent campus management system designed to monitor campus infrastructure, analyze real-time data, detect abnormal behavior, forecast energy consumption, calculate sustainability scores, and provide actionable recommendations.
+Smart Campus AI is a full-stack IoT-ready sustainability management platform that monitors **energy, water, and solar consumption**, detects anomalies using **Machine Learning**, forecasts future usage, and provides actionable insights through an interactive dashboard.
 
-The project combines **Artificial Intelligence, Machine Learning, IoT-style simulation, FastAPI, React, and data visualization** into a unified campus management dashboard.
+**Status:** ✅ Fully Deployed & Demo Ready
 
 ---
 
-## 🚀 Key Features
+## 🌐 Live Demo
 
-### 📊 Smart Dashboard
+| Service | Link |
+|---------|------|
+| Frontend (Vercel) | https://smart-campus-ai-pink.vercel.app |
+| Backend (Render) | https://smart-campus-ai-api.onrender.com |
+| API Documentation | https://smart-campus-ai-api.onrender.com/docs |
 
-* Real-time campus KPIs
-* Energy consumption monitoring
-* Water usage monitoring
-* Device status
-* Campus Green Score
-* Active alerts
-* AI-generated recommendations
-* Live system status
+> **Note:** The project currently runs in **DEMO mode** using a built-in IoT simulator and is ready for future integration with real sensors.
 
-### 🤖 AI & Machine Learning
+---
 
-#### Anomaly Detection
+## 🔑 Demo Credentials
 
-Uses an **Isolation Forest** model to identify unusual campus behavior such as:
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | `admin@psit.ac.in` | `admin123` |
+| Facility Manager | `facility@psit.ac.in` | `facility123` |
+| Department Manager | `cse.manager@psit.ac.in` | `manager123` |
+| Viewer | `viewer@psit.ac.in` | `viewer123` |
 
-* Abnormal energy consumption
-* Unexpected device activity
-* Unusual environmental readings
-* Potential infrastructure problems
+---
 
-#### Energy Forecasting
+# ✨ Features
 
-Machine learning models forecast future energy consumption using historical campus data.
+## 📊 Smart Dashboard
 
-The forecasting system helps administrators:
+- Real-time Energy Monitoring
+- Water Consumption Tracking
+- Solar Generation Monitoring
+- CO₂ Avoided Calculation
+- Green Score Leaderboard
+- Department-wise Analytics
 
-* Predict upcoming energy demand
-* Identify consumption patterns
-* Improve resource planning
-* Reduce unnecessary energy usage
+## 🤖 AI & Machine Learning
 
-### 🌱 Green Score
+- Isolation Forest Anomaly Detection
+- Random Forest Energy Forecasting
+- AI-generated Recommendations
+- Simulated Anomaly Testing
 
-The system calculates a sustainability-oriented campus score using factors such as:
+## 📈 Analytics
 
-* Energy consumption
-* Water usage
-* Renewable energy
-* Environmental performance
-* Operational efficiency
+- 24h / 7d / 30d Trends
+- Department Comparison
+- Sustainability Metrics
+- Historical Consumption Analysis
 
-### 🔔 Intelligent Alerts
+## 🔐 Administration
 
-The platform can identify abnormal conditions and display alerts to campus administrators.
+- JWT Authentication
+- Role-Based Access Control (RBAC)
+- Device Management
+- Report Generation
+- System Health Monitoring
 
-Examples:
+## 🌐 IoT Ready
 
-* High energy consumption
-* Device anomalies
-* Forecasted high demand
-* Infrastructure issues
-
-### 💡 AI Recommendations
-
-The system provides recommendations based on campus conditions and detected anomalies.
-
-Examples:
-
-* Reduce unnecessary energy consumption
-* Investigate abnormal devices
-* Optimize resource usage
-* Monitor departments with unusual consumption
-
-### 📈 Analytics
-
-Interactive analytics provide insights into:
-
-* Energy consumption
-* Water usage
-* Department performance
-* Device activity
-* Historical trends
-* Forecasts
-* Sustainability metrics
-
-### 🏢 Department Management
-
-Campus administrators can monitor individual departments and compare their operational performance.
-
-### 🔌 Device Monitoring
-
-The system provides device-level monitoring and status information.
-
-Supported states include:
-
-* Online
-* Offline
-* Warning
-* Anomalous
-
-### 📡 Real-Time Updates
-
-The application supports real-time data updates through WebSockets.
-
-### 🧪 Campus Simulator
-
-A built-in simulator generates campus readings and can simulate abnormal conditions without requiring physical IoT hardware.
-
-This makes the project suitable for:
-
-* Demonstrations
-* Testing
-* Academic presentations
-* AI/ML experimentation
-
-### 👥 Role-Based Access
-
-The application supports different user roles such as:
-
-* Admin
-* Facility Manager
-* Department Manager
-* Viewer
+- MQTT Architecture
+- WebSocket Real-time Updates
+- Built-in Demo Simulator
+- Future Hardware Integration
 
 ---
 
 # 🏗️ System Architecture
 
-```text
-                    ┌─────────────────────────┐
-                    │      React Frontend     │
-                    │                         │
-                    │ Dashboard / Analytics   │
-                    │ Alerts / Devices        │
-                    │ Departments / Reports   │
-                    └────────────┬────────────┘
-                                 │
-                                 │ REST API / WebSocket
-                                 ▼
-                    ┌─────────────────────────┐
-                    │      FastAPI Backend    │
-                    │                         │
-                    │ Authentication          │
-                    │ Campus APIs             │
-                    │ Device APIs             │
-                    │ Analytics               │
-                    │ Alerts                  │
-                    │ Forecasts               │
-                    └────────────┬────────────┘
-                                 │
-                    ┌────────────┴────────────┐
-                    │                         │
-                    ▼                         ▼
-          ┌──────────────────┐      ┌──────────────────┐
-          │   ML Pipeline    │      │ Campus Simulator │
-          │                  │      │                  │
-          │ Anomaly Detect.  │      │ Energy           │
-          │ Forecasting      │      │ Water            │
-          │ Recommendations  │      │ Devices          │
-          └────────┬─────────┘      └────────┬─────────┘
-                   │                         │
-                   └────────────┬────────────┘
-                                ▼
-                     ┌────────────────────┐
-                     │ Campus Data / DB   │
-                     └────────────────────┘
+```
+ IoT Sensors
+(Energy • Water • Solar • Weather)
+          │
+          ▼
+     MQTT Broker
+          │
+          ▼
+   IoT Gateway / ESP32
+          │
+          ▼
+   FastAPI Backend
+          │
+    ┌─────┴─────┐
+    ▼           ▼
+PostgreSQL   ML Models
+ Database    (Isolation Forest,
+              Random Forest)
+    └─────┬─────┘
+          ▼
+ React Dashboard
 ```
 
 ---
 
-# 🛠️ Technology Stack
+# ⚙️ Tech Stack
 
-## Frontend
-
-* React
-* Vite
-* JavaScript
-* Tailwind CSS
-* Recharts / charting components
-* WebSocket
-
-## Backend
-
-* Python
-* FastAPI
-* Pydantic
-* SQLAlchemy
-* Uvicorn
-* WebSockets
-
-## Artificial Intelligence / Machine Learning
-
-* Python
-* Scikit-learn
-* Isolation Forest
-* Forecasting models
-* Feature Engineering
-* Joblib
-
-## Data & Simulation
-
-* Campus data simulator
-* Synthetic IoT-style readings
-* Energy readings
-* Water readings
-* Device telemetry
-
-## Development & Deployment
-
-* Git
-* GitHub
-* Docker
-* REST APIs
-* Hugging Face / cloud deployment compatible architecture
+| Layer | Technology |
+|--------|------------|
+| Frontend | React, Vite, Tailwind CSS, Recharts |
+| Backend | FastAPI, SQLAlchemy |
+| Database | PostgreSQL |
+| Machine Learning | Scikit-learn |
+| Authentication | JWT |
+| Communication | REST API, WebSocket, MQTT |
+| Deployment | Vercel, Render |
 
 ---
 
-# 📁 Project Structure
+# 📂 Project Structure
 
-```text
+```
 smart-campus-ai/
-│
 ├── backend/
 │   ├── app/
+│   │   ├── routes/
 │   │   ├── ml/
-│   │   │   ├── anomaly_detection.py
-│   │   │   ├── feature_engineering.py
-│   │   │   ├── forecasting.py
-│   │   │   ├── model_manager.py
-│   │   │   └── recommendations.py
-│   │   │
 │   │   ├── models/
 │   │   ├── mqtt/
-│   │   ├── routes/
-│   │   ├── schemas/
-│   │   ├── services/
-│   │   ├── utils/
-│   │   │
 │   │   ├── bootstrap.py
-│   │   ├── config.py
 │   │   ├── database.py
-│   │   ├── dependencies.py
 │   │   └── main.py
-│   │
-│   ├── tests/
 │   └── requirements.txt
 │
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   ├── hooks/
 │   │   ├── pages/
 │   │   ├── services/
-│   │   ├── utils/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   │
-│   ├── package.json
-│   ├── vite.config.js
-│   └── tailwind.config.js
-│
-├── ml/
-│   ├── train_anomaly.py
-│   └── train_forecast.py
-│
-├── models/
-│   ├── energy_forecast.joblib
-│   ├── isolation_forest.joblib
-│   └── metrics.joblib
+│   │   └── App.jsx
 │
 ├── simulator/
-│   ├── engine.py
-│   └── simulator.py
-│
-├── simulator.py
-├── .env.example
-├── .gitignore
-├── LICENSE
 └── README.md
 ```
 
 ---
 
-# ⚙️ Installation
+# 🚀 Installation
 
-## 1. Clone the Repository
+## Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/smart-campus-ai.git
+git clone https://github.com/your-username/smart-campus-ai.git
 cd smart-campus-ai
 ```
 
-Replace `YOUR_USERNAME` with your GitHub username.
+## Backend Setup
 
----
-
-# 🐍 Backend Setup
-
-Open a terminal inside the project directory.
-
-### Create Virtual Environment
-
-Windows:
-
-```powershell
-python -m venv .venv
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload
 ```
 
-Activate it:
+Backend runs on:
 
-```powershell
-.venv\Scripts\activate
+```
+http://localhost:8000
 ```
 
-Install dependencies:
+## Frontend Setup
 
-```powershell
-pip install -r backend/requirements.txt
-```
-
----
-
-# ▶️ Run Backend
-
-From the project root:
-
-```powershell
-python -m uvicorn backend.app.main:app --reload --port 8000
-```
-
-Backend should be available at:
-
-```text
-http://127.0.0.1:8000
-```
-
-FastAPI documentation:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-The `/docs` page provides an interactive interface for testing the APIs.
-
----
-
-# 💻 Frontend Setup
-
-Open another terminal.
-
-```powershell
+```bash
 cd frontend
-```
-
-Install dependencies:
-
-```powershell
 npm install
-```
-
-Start the development server:
-
-```powershell
 npm run dev
 ```
 
-The frontend will normally be available at:
+Frontend runs on:
 
-```text
+```
 http://localhost:5173
 ```
 
 ---
 
-# 🔗 Frontend ↔ Backend Configuration
+# 🔧 Environment Variables
 
-Create a frontend environment file if required:
-
-```text
-frontend/.env
-```
-
-Configure the backend API URL:
+Create a `.env` file inside the backend folder.
 
 ```env
-VITE_API_BASE_URL=http://127.0.0.1:8000
-```
-
-Restart the frontend after changing environment variables.
-
----
-
-# 🧠 Machine Learning Models
-
-The project contains trained machine learning models inside:
-
-```text
-models/
-```
-
-### Anomaly Detection
-
-```text
-models/isolation_forest.joblib
-```
-
-The Isolation Forest model identifies unusual patterns in campus data.
-
-### Energy Forecasting
-
-```text
-models/energy_forecast.joblib
-```
-
-The forecasting model predicts future energy consumption.
-
-### Metrics
-
-```text
-models/metrics.joblib
-```
-
-Stores model-related evaluation information.
-
----
-
-# 🏋️ Training ML Models
-
-The training scripts are located in:
-
-```text
-ml/
-```
-
-Anomaly detection:
-
-```powershell
-python ml/train_anomaly.py
-```
-
-Energy forecasting:
-
-```powershell
-python ml/train_forecast.py
-```
-
-After training, the generated models can be stored in the `models/` directory.
-
----
-
-# 🧪 Campus Data Simulator
-
-The project includes a simulator so that the system can operate without physical IoT devices.
-
-The simulator can generate:
-
-* Energy readings
-* Water readings
-* Device activity
-* Environmental data
-* Normal operating conditions
-* Abnormal conditions
-
-This allows the AI system to be demonstrated using simulated smart-campus data.
-
----
-
-# 🚨 Simulating an Anomaly
-
-The dashboard/admin functionality can be used to trigger an anomaly simulation.
-
-This allows the complete pipeline to be demonstrated:
-
-```text
-Simulator
-    ↓
-Campus Reading
-    ↓
-ML Model
-    ↓
-Anomaly Detection
-    ↓
-Backend
-    ↓
-Alert
-    ↓
-React Dashboard
-```
-
-This is especially useful during project demonstrations.
-
----
-
-# 🔐 Authentication
-
-The application includes authentication and role-based access control.
-
-Example demonstration credentials used during development:
-
-```text
-Email: admin@psit.ac.in
-Password: admin123
-```
-
-> **Important:** Change demonstration credentials before deploying the application publicly.
-
----
-
-# 📊 Main Application Pages
-
-## Dashboard
-
-Provides a complete overview of campus operations.
-
-Includes:
-
-* KPIs
-* Energy
-* Water
-* Green Score
-* Alerts
-* Recommendations
-* Device status
-
-## Analytics
-
-Provides detailed historical analysis and visualizations.
-
-## Departments
-
-Shows department-wise performance and resource usage.
-
-## Devices
-
-Provides device-level status and monitoring.
-
-## Alerts
-
-Displays detected anomalies and system alerts.
-
-## Forecast
-
-Displays predicted future energy consumption.
-
-## Reports
-
-Provides campus performance and sustainability reports.
-
-## Admin
-
-Provides administrative controls and simulation functionality.
-
----
-
-# 🌱 Problem Statement
-
-Modern educational campuses consume large amounts of energy and water across classrooms, laboratories, hostels, offices, and other facilities.
-
-Traditional campus management systems often rely on manual monitoring and historical reporting. This can make it difficult to:
-
-* Detect abnormal consumption quickly
-* Predict future energy requirements
-* Identify inefficient devices
-* Monitor sustainability
-* Respond to infrastructure problems
-* Make data-driven decisions
-
-Smart Campus AI addresses these problems by combining real-time monitoring with artificial intelligence and machine learning.
-
----
-
-# 💡 Proposed Solution
-
-The proposed system continuously analyzes campus data and uses machine learning to identify patterns and abnormalities.
-
-The system:
-
-1. Collects campus data
-2. Processes incoming readings
-3. Performs feature engineering
-4. Detects anomalies
-5. Forecasts future energy usage
-6. Calculates campus sustainability metrics
-7. Generates recommendations
-8. Displays results through a centralized dashboard
-
----
-
-# 🔄 Data Flow
-
-```text
-Campus / Simulator
-       ↓
-Data Ingestion
-       ↓
-Data Processing
-       ↓
-Feature Engineering
-       ↓
- ┌─────┴──────────┐
- ↓                ↓
-Anomaly        Forecasting
-Detection
- ↓                ↓
- └───────┬────────┘
-         ↓
-Recommendations
-         ↓
-FastAPI Backend
-         ↓
-React Dashboard
-         ↓
-Administrator
+DATABASE_URL=your_postgresql_url
+JWT_SECRET=your_secret_key
+FRONTEND_URL=http://localhost:5173
+DATA_MODE=DEMO
+MQTT_BROKER=localhost
+MQTT_PORT=1883
 ```
 
 ---
 
-# 🤖 Machine Learning Approach
+# 🧠 Machine Learning Pipeline
 
-## Anomaly Detection
+### Isolation Forest
 
-The system uses Isolation Forest for unsupervised anomaly detection.
+- Detects abnormal energy consumption
+- Generates anomaly alerts
+- Supports preventive maintenance
 
-The model learns the normal behavior of campus data and assigns anomaly scores to new observations.
+### Random Forest Regression
 
-Conceptually:
+- Predicts future energy usage
+- Improves resource planning
+- Supports sustainability decisions
 
-```text
-Normal Data
-    ↓
-Learn Normal Patterns
-    ↓
-New Reading
-    ↓
-Anomaly Score
-    ↓
-Normal / Anomalous
 ```
-
-This approach is useful when large amounts of labeled anomaly data are unavailable.
-
----
-
-## Energy Forecasting
-
-Historical energy consumption data is used to identify consumption patterns and estimate future demand.
-
-The forecasting pipeline includes:
-
-```text
-Historical Data
-      ↓
+Sensor Data
+     │
+     ▼
 Data Cleaning
-      ↓
+     │
+     ▼
 Feature Engineering
-      ↓
-Model Training
-      ↓
-Evaluation
-      ↓
-Forecast
-```
-
----
-
-# 📡 API
-
-The backend provides REST APIs for different parts of the application.
-
-Major API categories include:
-
-```text
-/api/auth
-/api/campus
-/api/devices
-/api/anomalies
-/api/forecasts
-/api/admin
-/api/health
-/api/ingest
-```
-
-Interactive API documentation is available through:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
----
-
-# 🧪 Testing
-
-Backend tests are located inside:
-
-```text
-backend/tests/
-```
-
-Run the tests using:
-
-```powershell
-pytest backend/tests
-```
-
-or:
-
-```powershell
-python -m pytest backend/tests
-```
-
----
-
-# 🔒 Environment Variables
-
-Do not commit sensitive credentials to GitHub.
-
-Use:
-
-```text
-.env
-```
-
-for local secrets and:
-
-```text
-.env.example
-```
-
-as a template.
-
-Example:
-
-```env
-DATABASE_URL=your_database_url
-SECRET_KEY=your_secret_key
-```
-
-> Never upload real API keys, passwords, database credentials, or secret tokens to GitHub.
-
----
-
-# 🐳 Docker
-
-The project architecture can be containerized for deployment.
-
-A typical deployment architecture is:
-
-```text
-                 Internet
-                    │
-                    ▼
-             ┌─────────────┐
-             │   Frontend  │
-             │    React    │
-             └──────┬──────┘
-                    │
-                    ▼
-             ┌─────────────┐
-             │   FastAPI   │
-             │   Backend   │
-             └──────┬──────┘
-                    │
-          ┌─────────┴─────────┐
-          ▼                   ▼
-     Database            ML Models
-```
-
----
-
-# ☁️ Deployment
-
-The frontend and backend can be deployed separately.
-
-### Frontend
-
-Suitable platforms include:
-
-* Vercel
-* Netlify
-* Cloudflare Pages
-
-### Backend
-
-Suitable platforms include:
-
-* Render
-* Railway
-* Hugging Face Spaces
-* AWS
-* Google Cloud
-* Azure
-
-For production deployment, configure:
-
-```text
-Frontend
-    ↓
-Public Backend URL
-```
-
-instead of:
-
-```text
-http://127.0.0.1:8000
-```
-
----
-
-# 📸 Screenshots
-
-Add screenshots of the application here after deployment.
-
-Recommended screenshots:
-
-```text
-1. Login Page
-2. Dashboard
-3. Analytics
-4. Anomaly Alert
-5. Energy Forecast
-6. Departments
-7. Devices
-8. Reports
-9. Admin Panel
-```
-
-Example:
-
-```markdown
-## Dashboard
-
-![Smart Campus Dashboard](screenshots/dashboard.png)
-```
-
----
-
-# 🎯 Project Objectives
-
-The major objectives of Smart Campus AI are:
-
-* Develop an intelligent campus monitoring platform
-* Monitor energy and resource consumption
-* Detect abnormal campus behavior
-* Forecast future energy demand
-* Provide actionable recommendations
-* Improve campus sustainability
-* Reduce resource wastage
-* Provide centralized campus analytics
-* Demonstrate practical applications of AI/ML
-
----
-
-# 🌍 Future Scope
-
-The project can be extended with real IoT hardware and additional AI capabilities.
-
-Potential future improvements include:
-
-### IoT Integration
-
-Connect real sensors for:
-
-* Electricity
-* Water
-* Temperature
-* Air quality
-* Occupancy
-* Smart meters
-
-### Advanced AI
-
-Future versions could include:
-
-* Deep learning forecasting
-* Large Language Model based recommendations
-* AI-powered campus assistant
-* Natural language analytics
-* Automated root-cause analysis
-
-### Predictive Maintenance
-
-The system could predict device failures before they occur.
-
-### Mobile Application
-
-A mobile application could provide:
-
-* Push notifications
-* Alerts
-* Campus statistics
-* Admin controls
-
-### Smart Automation
-
-AI predictions could automatically control:
-
-* Lighting
-* HVAC
-* Smart appliances
-* Water systems
-
----
-
-# 👨‍🎓 Academic Information
-
-**Project:** Smart Campus AI
-
-**Degree:** B.Tech Computer Science & Engineering — Artificial Intelligence & Machine Learning
-
-**Project Type:** Final Year / Major Project
-
-**Domain:**
-
-```text
-Artificial Intelligence
+     │
+     ▼
 Machine Learning
-IoT
-Smart Campus
-Sustainability
-Full-Stack Development
+(Isolation Forest + Random Forest)
+     │
+     ▼
+Alerts • Forecast • Recommendations
 ```
+
+---
+
+# 🌱 Physical IoT Implementation (Future Ready)
+
+The platform is designed for real hardware deployment using:
+
+- Smart Energy Meters
+- Water Flow Sensors
+- Ultrasonic Water Level Sensors
+- Solar Power Meters
+- ESP32 IoT Gateway
+- MQTT Communication
+- Weather Sensors
+
+```
+Solar Panels ─┐
+Energy Meter ─┤
+Water Sensor ─┼──► ESP32 Gateway
+Weather Node ─┘        │
+                        ▼
+                  MQTT Broker
+                        ▼
+                 FastAPI Backend
+                        ▼
+                  PostgreSQL
+                        ▼
+                  React Dashboard
+```
+
+---
+
+# 📋 API Overview
+
+| Endpoint | Purpose |
+|-----------|----------|
+| `/api/login` | User Authentication |
+| `/api/dashboard` | Dashboard Data |
+| `/api/analytics` | Analytics |
+| `/api/alerts` | Alerts |
+| `/api/forecast` | Forecast |
+| `/api/admin` | Admin Controls |
+| `/api/ws` | WebSocket Updates |
+
+---
+
+# 🧪 Testing Results
+
+| Test | Status |
+|------|--------|
+| Login | ✅ Pass |
+| Dashboard | ✅ Pass |
+| Analytics | ✅ Pass |
+| Forecast | ✅ Pass |
+| Reports | ✅ Pass |
+| Simulate Anomaly | ✅ Pass |
+| Deployment | ✅ Pass |
+
+---
+
+# 📈 Project Workflow
+
+1. Sensors generate Energy, Water, and Solar readings.
+2. ESP32/IoT Gateway collects sensor data.
+3. MQTT transfers readings.
+4. FastAPI processes incoming data.
+5. PostgreSQL stores readings.
+6. Machine Learning analyzes data.
+7. Dashboard displays analytics and alerts.
+
+---
+
+# 🎯 Future Scope
+
+- Live ESP32 Sensor Integration
+- Mobile Application
+- Multi-campus Support
+- QR-based Device Maintenance
+- Carbon Footprint Analytics
+- Predictive Maintenance
+- AI Chatbot Assistant
+
+---
+
+# 📊 Project Highlights
+
+- ✅ Full-Stack Cloud Deployment
+- ✅ AI-Powered Anomaly Detection
+- ✅ Energy Forecasting
+- ✅ JWT Authentication
+- ✅ Role-Based Access Control
+- ✅ PostgreSQL Database
+- ✅ WebSocket Support
+- ✅ MQTT-ready Architecture
+- ✅ Interactive Dashboard
+- ✅ Built-in Demo Simulator
 
 ---
 
@@ -930,22 +329,12 @@ Full-Stack Development
 
 **Yash Kushwaha**
 
-B.Tech CSE — Artificial Intelligence & Machine Learning
+B.Tech – Computer Science & Engineering
 
----
-
-# 📄 License
-
-This project is licensed under the terms specified in the `LICENSE` file.
+Pranveer Singh Institute of Technology (PSIT), Kanpur
 
 ---
 
 # ⭐ Acknowledgement
 
-This project was developed as an academic AI/ML project to demonstrate how artificial intelligence, machine learning, real-time monitoring, and full-stack technologies can be applied to smart campus management and sustainability.
-
----
-
-## ⭐ If You Find This Project Useful
-
-Give the repository a ⭐ on GitHub and feel free to explore, modify, and improve the project.
+This project was developed as a **Final Year Major Project** for the Bachelor of Technology degree at **Pranveer Singh Institute of Technology (PSIT), Kanpur**, demonstrating the practical application of **Artificial Intelligence, IoT, Cloud Computing, and Web Technologies** for sustainable campus management.
