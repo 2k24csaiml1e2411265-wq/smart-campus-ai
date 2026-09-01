@@ -59,21 +59,26 @@ def create_app() -> FastAPI:
     def on_startup():
         Path("data").mkdir(exist_ok=True)
         Base.metadata.create_all(bind=engine)
-
+    
         from app.bootstrap import bootstrap
         bootstrap()
-
-        # Start MQTT
+    
         start_mqtt()
-
-        # Start simulator in background (Render)
+    
+        # Start DEMO simulator in the background
         simulator = Path(__file__).resolve().parents[2] / "simulator" / "simulator.py"
+    
+        env = os.environ.copy()
+        env["SIMULATOR_API_URL"] = "http://127.0.0.1:10000"
+    
         subprocess.Popen(
             [sys.executable, str(simulator)],
+            env=env,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-
+    
+        logger.info("simulator_started", path=str(simulator))
         logger.info("api_started", campus=settings.campus_name, data_mode=settings.data_mode)
 
     @app.on_event("shutdown")
