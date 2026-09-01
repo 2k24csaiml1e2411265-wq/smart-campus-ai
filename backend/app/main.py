@@ -1,19 +1,28 @@
 from pathlib import Path
-import threading
 import subprocess
 import sys
+import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
-from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.config import get_settings
 from app.database import Base, engine
 from app.mqtt.client import start_mqtt, stop_mqtt
-from app.routes import admin, anomalies, auth, campus, devices, forecasts, health, ingest, ws
+from app.routes import (
+    admin,
+    anomalies,
+    auth,
+    campus,
+    devices,
+    forecasts,
+    health,
+    ingest,
+    ws,
+)
 from app.utils.logging import logger
 
 settings = get_settings()
@@ -59,27 +68,36 @@ def create_app() -> FastAPI:
     def on_startup():
         Path("data").mkdir(exist_ok=True)
         Base.metadata.create_all(bind=engine)
-    
+
         from app.bootstrap import bootstrap
         bootstrap()
-    
+
+        # Start MQTT
         start_mqtt()
-    
+
         # Start DEMO simulator in the background
         simulator = Path(__file__).resolve().parents[2] / "simulator" / "simulator.py"
-    
-        env = os.environ.copy()
-        env["SIMULATOR_API_URL"] = "http://127.0.0.1:10000"
-    
-        subprocess.Popen(
-            [sys.executable, str(simulator)],
-            env=env,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+
+        if simulator.exists():
+            env = os.environ.copy()
+            env["SIMULATOR_API_URL"] = "http://127.0.0.1:10000"
+
+            subprocess.Popen(
+                [sys.executable, str(simulator)],
+                env=env,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+
+            logger.info("simulator_started", path=str(simulator))
+        else:
+            logger.warning("simulator_not_found", path=str(simulator))
+
+        logger.info(
+            "api_started",
+            campus=settings.campus_name,
+            data_mode=settings.data_mode,
         )
-    
-        logger.info("simulator_started", path=str(simulator))
-        logger.info("api_started", campus=settings.campus_name, data_mode=settings.data_mode)
 
     @app.on_event("shutdown")
     def on_shutdown():
