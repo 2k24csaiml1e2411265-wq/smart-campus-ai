@@ -1,4 +1,7 @@
 from pathlib import Path
+import threading
+import subprocess
+import sys
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,21 +23,19 @@ limiter = Limiter(key_func=get_remote_address, default_limits=["120/minute"])
 def create_app() -> FastAPI:
     app = FastAPI(
         title="Smart Campus AI",
-        description="AI-Powered Energy, Water & Sustainability Intelligence Platform (DEMO/SIMULATOR ready)",
+        description="AI-Powered Energy, Water & Sustainability Intelligence Platform",
         version="1.0.0",
         docs_url="/docs",
         redoc_url="/redoc",
     )
+
     app.state.limiter = limiter
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
     origins = [o.strip() for o in settings.frontend_url.split(",") if o.strip()]
     if not origins:
         origins = ["http://localhost:5173"]
-    if settings.environment == "development":
-        for origin in ("http://localhost:5173", "http://127.0.0.1:5173"):
-            if origin not in origins:
-                origins.append(origin)
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
@@ -42,15 +43,6 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
-    @app.middleware("http")
-    async def security_headers(request, call_next):
-        response = await call_next(request)
-        response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["X-Frame-Options"] = "DENY"
-        response.headers["Referrer-Policy"] = "same-origin"
-        logger.info("api_request", method=request.method, path=request.url.path, status=response.status_code)
-        return response
 
     api = "/api"
     app.include_router(health.router, prefix=api)
@@ -67,10 +59,21 @@ def create_app() -> FastAPI:
     def on_startup():
         Path("data").mkdir(exist_ok=True)
         Base.metadata.create_all(bind=engine)
-        from app.bootstrap import bootstrap
 
+        from app.bootstrap import bootstrap
         bootstrap()
+
+        # Start MQTT
         start_mqtt()
+
+        # Start simulator in background (Render)
+        simulator = Path(__file__).resolve().parents[2] / "simulator" / "simulator.py"
+        subprocess.Popen(
+            [sys.executable, str(simulator)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
         logger.info("api_started", campus=settings.campus_name, data_mode=settings.data_mode)
 
     @app.on_event("shutdown")
