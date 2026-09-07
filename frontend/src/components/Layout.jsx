@@ -12,12 +12,24 @@ const LiveCtx = createContext({
   lastEvent: null,
   tick: 0,
 });
+
 export const useLive = () => useContext(LiveCtx);
 
 export default function Layout() {
-  const [dark, setDark] = useState(() => localStorage.getItem("sca_theme") === "dark");
-  const [collapsed, setCollapsed] = useState(false);
-  const [meta, setMeta] = useState({ campus: "PSIT Kanpur", dataMode: "DEMO" });
+  const [dark, setDark] = useState(
+    () => localStorage.getItem("sca_theme") === "dark"
+  );
+
+  // Sidebar collapses only on mobile
+  const [collapsed, setCollapsed] = useState(
+    () => window.innerWidth < 768
+  );
+
+  const [meta, setMeta] = useState({
+    campus: "PSIT Kanpur",
+    dataMode: "DEMO",
+  });
+
   const [lastEvent, setLastEvent] = useState(null);
   const [tick, setTick] = useState(0);
 
@@ -26,7 +38,9 @@ export default function Layout() {
       setTick((n) => n + 1);
       return;
     }
-    if (ev?.type && ev.type !== "hello") setLastEvent(ev);
+    if (ev?.type && ev.type !== "hello") {
+      setLastEvent(ev);
+    }
   });
 
   useEffect(() => {
@@ -37,7 +51,10 @@ export default function Layout() {
   useEffect(() => {
     CampusAPI.health()
       .then(({ data }) =>
-        setMeta({ campus: data.campus || "PSIT Kanpur", dataMode: data.data_mode || "DEMO" })
+        setMeta({
+          campus: data.campus || "PSIT Kanpur",
+          dataMode: data.data_mode || "DEMO",
+        })
       )
       .catch(() => {});
   }, []);
@@ -45,7 +62,14 @@ export default function Layout() {
   const displayStatus = status === "LIVE" ? "LIVE" : status;
 
   return (
-    <LiveCtx.Provider value={{ status: displayStatus, lastEvent, tick, ...meta }}>
+    <LiveCtx.Provider
+      value={{
+        status: displayStatus,
+        lastEvent,
+        tick,
+        ...meta,
+      }}
+    >
       <div className="app-shell min-h-screen">
         <Navbar
           dark={dark}
@@ -55,8 +79,23 @@ export default function Layout() {
           campus={meta.campus}
           dataMode={meta.dataMode}
         />
+
         <div className="mx-auto flex max-w-[1600px] gap-4 px-3 pb-8 pt-4 md:px-6">
-          <Sidebar collapsed={collapsed} onNavigate={() => setCollapsed(true)} />
+
+          {/* Desktop Sidebar (always expanded) */}
+          <div className="hidden md:block w-64 min-w-64 flex-shrink-0">
+            <Sidebar collapsed={false} onNavigate={() => {}} />
+          </div>
+
+          {/* Mobile Sidebar */}
+          <div className="md:hidden">
+            <Sidebar
+              collapsed={collapsed}
+              onNavigate={() => setCollapsed(true)}
+            />
+          </div>
+
+          {/* Main Content */}
           <main className="min-w-0 flex-1 animate-fade">
             <Outlet />
           </main>
