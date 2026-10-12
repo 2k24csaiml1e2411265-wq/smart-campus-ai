@@ -1,3 +1,4 @@
+
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
@@ -10,7 +11,10 @@ connect_args = {}
 
 if database_url.startswith("sqlite"):
     connect_args = {"check_same_thread": False}
-elif database_url.startswith(("postgresql://", "postgresql+psycopg2://")):
+
+elif database_url.startswith(
+    ("postgresql://", "postgresql+psycopg2://")
+):
     connect_args = {"sslmode": "require"}
 
 engine = create_engine(
@@ -25,9 +29,11 @@ if database_url.startswith("sqlite"):
     @event.listens_for(engine, "connect")
     def _sqlite_pragma(dbapi_connection, _connection_record):
         cursor = dbapi_connection.cursor()
-        cursor.execute("PRAGMA foreign_keys=ON")
-        cursor.execute("PRAGMA journal_mode=WAL")
-        cursor.close()
+        try:
+            cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.execute("PRAGMA journal_mode=WAL")
+        finally:
+            cursor.close()
 
 
 SessionLocal = sessionmaker(
@@ -48,4 +54,3 @@ def get_db():
         yield db
     finally:
         db.close()
-```
