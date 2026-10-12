@@ -1,22 +1,27 @@
+```python
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 from app.config import get_settings
 
 settings = get_settings()
+database_url = settings.database_url
 
 connect_args = {}
-if settings.database_url.startswith("sqlite"):
+
+if database_url.startswith("sqlite"):
     connect_args = {"check_same_thread": False}
+elif database_url.startswith(("postgresql://", "postgresql+psycopg2://")):
+    connect_args = {"sslmode": "require"}
 
 engine = create_engine(
-    settings.database_url,
+    database_url,
     connect_args=connect_args,
     pool_pre_ping=True,
     future=True,
 )
 
-if settings.database_url.startswith("sqlite"):
+if database_url.startswith("sqlite"):
 
     @event.listens_for(engine, "connect")
     def _sqlite_pragma(dbapi_connection, _connection_record):
@@ -26,7 +31,12 @@ if settings.database_url.startswith("sqlite"):
         cursor.close()
 
 
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
+SessionLocal = sessionmaker(
+    bind=engine,
+    autoflush=False,
+    autocommit=False,
+    future=True,
+)
 
 
 class Base(DeclarativeBase):
@@ -39,3 +49,4 @@ def get_db():
         yield db
     finally:
         db.close()
+```
